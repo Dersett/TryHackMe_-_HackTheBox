@@ -1,0 +1,227 @@
+The responsibilities for a Junior Security Analyst or Tier 1 SOC Analyst include:
+	• Monitor and investigate the alerts (most of the time, it's a 24x7 SOC operations environment)
+	• Configure and manage the security tools
+	• Develop and implement basic IDS (Intrusion Detection System) signatures
+	• Participate in SOC working groups, meetings
+	• Create tickets and escalate the security incidents to the Tier 2 and Team Lead if needed
+
+From <https://tryhackme.com/room/jrsecanalystintrouxo> 
+
+
+
+A SOC team proactively uses SIEM (Security information and event management) and EDR (Endpoint Detection and Response) tools to monitor suspicious and malicious network activities. 
+
+
+The core function of a SOC (Security Operations Center) is to investigate, monitor, prevent, and respond to threats in the cyber realm 24/7 or around the clock
+
+
+
+
+There are many open-source databases out there like AbuseIPDB, Cisco Talos Intelligence, where you can perform a reputation and location check for the IP address. Most security analysts use these tools to aid them with alert investigations. You can also make the Internet safer by reporting the malicious IPs, for example, on AbuseIPDB.
+
+Pyramid of pain
+
+IP Blocking 
+
+From a defense standpoint, knowledge of the IP addresses an adversary uses can be valuable. A common defense tactic is to block, drop, or deny inbound requests from IP addresses on your parameter or external firewall. This tactic is often not bulletproof as it’s trivial for an experienced adversary to recover simply by using a new public IP address.
+
+
+		One of the ways an adversary can make it challenging to successfully carry out IP blocking is by using Fast Flux.
+		
+		
+		A fast flux network is "fast" because, using DNS, it quickly rotates through many bots, using each one for only a short time to make IP-based denylisting and takedown efforts difficult.
+		
+		
+		(Palo Alto Networks provides protection against fast flux )
+		
+		
+		
+	• We can do user agent blocks asswell if we are able to identify the user agent of the attacker 
+
+
+YARA rules are a type of malware detection pattern used to identify and classify malicious software
+
+
+Antivirus signatures, detection rules, and YARA rules can be great weapons for you to use against identifying files if they are malicious or not. 
+
+	MalwareBazaar and Malshare are good resources to provide you with access to the samples, malicious feeds, and YARA results - these all can be very helpful when it comes to threat hunting and incident response. 
+	
+	
+	
+	
+	CVE -  Common vulnerabilities and exposures 
+	
+	
+	
+	
+For detection rules, SOC Prime Threat Detection Marketplace is a great platform, where security professionals share their detection rules for different kinds of threats including the latest CVE's that are being exploited in the wild by adversaries. 
+
+
+
+Fuzzy hashing - Can be used to find similarities even if its small similarity it can mostly find 
+
+
+
+TTPs stands for Tactics, Techniques & Procedures. 
+
+
+
+Pass-the-Hash (PtH) Definition
+
+A Pass-the-Hash (PtH) attack is a technique where an attacker captures a password hash (as opposed to the password characters) and then passes it through for authentication and lateral access to other networked systems. With this technique, the threat actor doesn’t need to decrypt the hash to obtain a plain text password. PtH attacks exploit the authentication protocol, as the passwords hash remains static for every session until the password is rotated. Attackers commonly obtain hashes by scraping a system’s active memory and other techniques.
+
+
+
+MITRE ATT&CK Matrix, -  is a framework on how to  respond to attacks and such 
+
+
+
+
+
+
+
+
+			
+				
+				
+				
+				
+				
+Cyber Kill chain
+
+Reconnaissance 
+
+
+	• Collecting info on the target without directy getting involved with their systems 
+	
+	
+	• Email harvesting is a part of this, getting the email is a important step since then you can send phishing emails 
+	
+	• An attacker would also use social media websites such as LinkedIn, Facebook, Twitter, and Instagram to collect information on a specific victim he would want to attack or the company. The information found on social media can be beneficial for an attacker to conduct a phishing attack.
+	
+	
+	theHarvester - other than gathering emails, this tool is also capable of gathering names, subdomains, IPs, and URLs using multiple public data sources 
+	
+	Hunter.io - this is  an email hunting tool that will let you obtain contact information associated with the domain
+	
+	OSINT Framework - OSINT Framework provides the collection of OSINT tools based on various categories
+	
+	
+	
+	
+	Malware is a program or software that is designed to damage, disrupt, or gain unauthorized access to a computer.
+	
+	An exploit is a program or a code that takes advantage of the vulnerability or flaw in the application or system.
+	
+	A payload is a malicious code that the attacker runs on the system.
+	
+	
+	
+	
+	malicious macro or VBA (Visual Basic for Applications) scripts- scripts of sorts to run automated malicious tasks. 
+	
+	
+	lateral movement refers to the techniques that a malicious actor uses after gaining initial access to the victim's machine to move deeper into a network to obtain sensitive data. 
+	
+	
+	
+	Installing a web shell on the webserver. A web shell is a malicious script written in web development programming languages such as ASP, PHP, or JSP used by an attacker to maintain access to the compromised system remotely.
+	
+	
+	 attacker can also use the Timestomping technique to avoid detection by the forensic investigator and also to make the malware appear as a part of a legitimate program. The Timestomping technique lets an attacker modify the file's timestamps, including the modify, access, create and change times.  
+	
+	
+	 C2 (Command and Control) 
+	
+	
+	 Until recently, IRC (Internet Relay Chat) was the traditional C2 channel used by attackers. This is no longer the case, as modern security solutions can easily detect malicious IRC traffic. 
+	
+	
+	The protocols HTTP on port 80 and HTTPS on port 443 - this type of beaconing blends the malicious traffic with the legitimate traffic and can help the attacker evade firewalls.  
+	DNS (Domain Name Server). The infected machine makes constant DNS requests to the DNS server that belongs to an attacker, this type of C2 communication is also known as DNS Tunneling.
+	
+	
+	Shadow Copy is a Microsoft technology that can create backup copies, snapshots of computer files, or volumes.
+	
+	
+	
+	UKC (Unified Kill Chain) framework that is used to help understand how cyber attacks occur.
+	
+		The UKC can encourage threat modelling as the UKC framework helps identify potential attack surfaces and how these systems may be exploited.
+		
+		STRIDE, DREAD and CVSS (to name a few) are all frameworks specifically used in threat modelling.
+		
+	
+	
+	
+	
+	Reconnaissance 
+	
+		○ Passive or active reconnaissance 
+		Information gathered from this phase can include:
+		
+		○ Discovering what systems and services are running on the target, this is beneficial information in the weaponisation and exploitation phases of this section. 
+		○ Finding contact lists or lists of employees that can be impersonated or used in either a social engineering or phishing attack.
+		○ Looking for potential credentials that may be of use in later stages,  such as pivoting or initial access.
+		○ Understanding the network topology and other networked systems can be used to pivot too. 
+	
+	
+	Weaponization 
+	
+		○ this could be setting up a command and control server, or a system capable of catching reverse shells and delivering payloads to the system.
+		○ Making a certain type of malware 
+	
+	
+	Social engineering 
+	
+		○ Getting a user to open a malicious attachment.
+		
+		○ Impersonating a web page and having the user enter their credentials.
+		
+		○ Calling or visiting the target and impersonating a user (for example, requesting a password reset) or being able to gain access to areas of a site that the attacker would not previously be capable of (for example, impersonating a utility engineer).
+	
+	
+	Exploitation
+	
+	
+		○  Attacker takes advantage of weaknesses or vulnerabilities present in a system.
+	
+		
+		○ Maybe uploading and executing a reverse shell 
+		
+			○ A reverse shell is a script or executable program that makes it possible to gain interactive shell access to a system through an outgoing connection from that system
+		
+		
+		
+	Persistence 
+	
+		○ Techniques an adversary uses to maintain access to a system they have gained an initial foothold on
+		
+		
+			○ Creating a service on the target system that will allow the attacker to regain access.
+			
+			○ Adding the target system to a Command & Control server where commands can be executed remotely at any time.
+			
+			○ And other backdoors  (Reversal shell) 
+		
+		
+	
+	Defence Evasion
+	
+		○ Not being detected by:
+		
+			○ Web application firewalls.
+			○ Network firewalls.
+			○ Anti-virus systems on the target machine.
+			○ Intrusion detection systems.
+			
+			
+			
+	Command & Control
+	
+	
+	
+		
+		
+			
+	
