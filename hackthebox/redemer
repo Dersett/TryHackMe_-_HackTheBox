@@ -1,0 +1,24 @@
+Redis is a type of database service that stores data directly in the computer's main memory (RAM), rather than on a hard drive (databases that stores directly in the RAM is called a In Memory database)  (while Traditional Database are stored Secondary memory) 
+
+	• In this machine its running on port 6379 
+
+
+	• We can use the utility redis-cli  to interact with REDIS databases on other machines 
+
+		○ We need to put the command/flag -h to specify the host ip address
+		
+			redis-cli -h ipaddress
+			
+			
+		○ Once inside we can use info to get the information about the database 
+	
+		○ We can use the command Select pick the needed database in Redis 
+		○ KEY * to view the keys in it (it will show all the keys and if theres a lot might make the sever lag) 
+		○ we get do TYPE keyname to view the type of the key, then based on that use the command needed to key content 
+			
+			For strings: GET keyname
+			For lists: LRANGE keyname 0 -1
+			For sets: SMEMBERS keyname
+			For hashes: HGETALL keyname
+			For sorted sets: ZRANGE keyname 0 -1 WITHSCORES
+		
