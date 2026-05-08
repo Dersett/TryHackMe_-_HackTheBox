@@ -1,0 +1,162 @@
+Introduction
+
+	The syntax for Docker can be categorized into four main groups:
+	
+		○ Running a container
+		○ Managing & Inspecting containers
+		○ Managing Docker images
+		○ Docker daemon stats and information
+	
+	
+	
+
+	Docker Images 
+	
+		○ Docker images are instructions for what a container should do, so we need to download a image and set it to the Docker container 
+		
+		○ Docker images has a image name and a tag, we have to specify both before downloading 
+		
+			§ because multiple images can have the same name but not the same tag 
+			
+			
+		
+		Commands:
+		
+			§ docker pull imagename:tagname   (to download a image to your device)  
+			
+			§ docker image (lists all commands relating to docker images) 
+			
+			§ docker image ls (lists all downloaded docker images) 
+		
+			§ docker image rm imagename:tagname (to delete a downloaded docker image)
+			
+			
+	
+	
+Running a Docker container 
+
+	• The run commands creates containers from images 
+			
+			he command works in the following way: docker run [OPTIONS] IMAGE_NAME [COMMAND] [ARGUMENTS...]  the options enclosed in brackets are not required for a container to run.
+			
+			
+	
+			
+			
+			
+			
+	• An image named "helloworld"
+	
+	• "Interactively" by providing the -it switch in the [OPTIONS] command. This will allow us to interact with the container directly.
+	
+	• I am going to spawn a shell within the container by providing /bin/bash as the [COMMAND] part. This argument is where you will place what commands you want to run within the container (such as a file, application or shell!)
+	
+	• So, to achieve the above, my command will look like the following: docker run -it helloworld /bin/bash
+	
+			
+	
+	Listing Running Containers
+	
+		○ We can get information on running containers
+		
+			
+			docker ps 
+		
+			
+			
+			To list all containers (even stopped), you can use docker ps -a:
+			
+			
+			
+Docker Images 
+
+	• Docker files play an essential role in Docker. Docker files is a formatted text file which essentially serves as an instruction manual for what containers should do and ultimately assembles a Docker image.
+			
+		
+		○ How docker files are formatted:
+
+			§ INSTRUCTION argument
+	
+	
+	
+		
+		
+		
+		
+		
+			§ Remember, the commands that you can run via the RUN instruction will depend on the operating system you use in the FROM instruction
+			
+			
+			Building Your First Container
+			
+			§ Once we have a Dockerfile, we can create an image using the docker build command. This command requires a few pieces of information:
+			
+			§ Whether or not you want to name the image yourself (we will use the -t (tag) argument).
+			
+			§ The name that you are going to give the image.
+			
+			§ The location of the Dockerfile you wish to build with.
+			
+			§ I’ll provide the scenario and then explain the relevant command. Let’s say we want to build an image - let’s fill in the two required pieces of information listed above:
+			
+			§ We are going to name it ourselves, so we are going to use the -t argument.
+			
+			§ We want to name the image.
+			
+			§ The Dockerfile is located in our current working directory (.).
+			
+			
+			The command would look like so: docker build -t helloworld . (we are using the dot to tell Docker to look in our working directory). 
+			
+			
+
+Docker Compose 
+
+	Let’s first understand what Docker Compose is and why it’s worth understanding. So far, we’ve only interacted with containers individually. Docker Compose, in summary, allows multiple containers (or applications) to interact with each other when needed while running in isolation from one another.
+	
+	
+		(We need Docker Compose installed, doesn’t get installed with docker itself) 
+		 
+		
+		
+		A Showcase of Docker Compose
+		
+		With that said, let’s look into how we can use Docker Compose ourselves. In this scenario, I am going to assume the following requirements:
+		
+			§ An E-commerce website running on Apache
+			§ This E-commerce website stores customer information in a MySQL database
+		
+		Now, we could manually run the two containers via the following:
+			
+			§ Creating the network between the two containers: docker network create ecommerce
+			
+			§ Running the Apache2 webserver container: docker run -p 80:80 --name webserver --net ecommerce webserver
+			
+			§ Running the MySQL Database server: docker run --name database --net ecommerce webserver
+			
+			
+			
+			
+		○ Since we will need to run multiple commands when adding something we can just use one command docker-compose up 
+		
+		
+		
+		
+		Docker-compose.yml files 101
+		
+		One file to rule them all. The formatting of a docker-compose.yml file is different to that of a Dockerfile. It is important to note that YAML requires indentation (a good practice is two spaces which must be consistent!
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		Docker Socket 
+		
+			§ Docker works in a client/ server model 
