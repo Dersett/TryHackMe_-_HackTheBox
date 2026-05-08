@@ -1,0 +1,25 @@
+	• FTP( File transfer protocol)
+	
+		○ Port number 21
+		○ Secure version of FTP is called SFTP (Secure File Transfer Protocol) It uses SSH (Secure shell)
+		○ ftp -y to update the service 
+		○ ftp -?  To see what the service can perform 
+		
+		
+		○ ftp ipaddress in order to connect to the target 
+		
+			
+			§ In most cases we will be able to use the anonymous account to access the service like a actual user, and we can put any password and be able to login since the anonymous username the service will just disregard the password 
+			
+			
+			§ After we successfully login we will get the code 230 
+			
+			
+				□ First we will list all the directories in the system by using either ls or dir 
+				
+				
+				□ Then we can download something we want to view to our system using 
+				
+					get filename 
+					
+					(The file will be downloaded to our main systems downloads folder) 
