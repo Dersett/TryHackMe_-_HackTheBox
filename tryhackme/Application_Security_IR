@@ -1,0 +1,105 @@
+Application security Incident Response 
+
+	The ultimate goal of AppSec IR is to leverage AppSec practices like secure coding, code review, and application testing to influence each stage of incident response:
+	
+	Preparation 
+	Detection & Identification
+	Containment 
+	Eradication 
+	Recovery
+	
+	
+	
+	• When an application-level incident occurs, this collaboration (the intersection of the two teams makes AppSec IR crucial and is what can make the difference in responding to the incident swiftly and effectively. For example, the AppSec team might identify the exact code flaw and provide a patch, while the incident responders deploy a WAF rule to hold off the attacker until that patch can be applied
+	
+	
+	
+	• Web Application Firewalls (WAF)
+	
+	• A Content Delivery Network (CDN) is a globally distributed network of proxy servers that delivers web content to users quickly and efficiently by caching it closer to their location, you can also rate limit users and geo/IP blocking to reduce attack impact.
+
+	• Threat Intelligence (feeds/platforms): Use IOCs (Indicator of Compromise), context, and emerging TTPs to enrich detections, tune WAF/RASP rules, and guide triage/prioritisation.
+	
+	
+	
+	WAFs use predefined, often rule-based, security policies to block known threats before they reach an application, 
+	
+	Runtime Application Self-Protection (RASP): RASP is an in-app security technology that monitors an application from the inside. Real-time attacks can be detected and blocked by monitoring for dangerous actions within the running application itself.
+	
+	Prevention
+	
+		○ One of the most effective ways of combating application security incidents is by preventing them from happening in the first place
+		
+		○ Strengthening the Software Development Life Cycle (SDLC)
+		○ This is known as adopting a "Secure by Design"
+		○ SDLC into SSDLC (Secure Software Development Life Cycle).
+	
+		○ The aim here is to dramatically reduce the likelihood of serious application incidents occurring by adopting a strong preventive posture, backed by developer training and security testing. For more on this subject. 
+		
+	Observe 
+	
+		○ Even if a attack do go through, make sure it doesn’t go unnoticed
+		
+		○ The first step we can take towards this is ensuring that your application logs all key events, such as:
+	
+				Authentication attempts
+				API calls or transactions
+				Server errors
+	
+		○ One method of asking the right questions (and so getting the right answers in advance) is with the development of IR playbooks. Want to learn more about IR playbooks? Check out or IR Playbooks room!
+	
+	
+	
+	Detection & Identification
+	
+	
+		○ How to detect
+			§ Log anomalies
+			§ User complaints or reports
+			§ Bug Bounty 
+			
+		
+		
+		How
+		
+			§ Get information through alerts and bug bounty
+			§  Identify the attack/vulnerability and validate its existence
+			§ Determining the scope. You don't want to go any further until you assess the severity and impact of the attack 
+			
+			
+	Containment 
+	
+		○ Disable vulnerable feature / route: If a specific feature or API endpoint has been confirmed as the breach vector, consider turning it off temporarily until the incident has been resolved, Many modern applications are built with feature flags/toggles - essentially kill switches
+		
+		○ Apply WAF rules / block malicious traffic: A WAF can be updated on the fly, so if your observability is high and you have context-rich alerts and logging, you may be able to pinpoint an IP address where the attack is originating and block it.
+		
+		○ App restrictions: consider taking the application offline temporarily, or disabling key features such as new logins. 
+		
+		○ Stop the spread - a web application, this may also mean revoking any compromised tokens or credentials so they can't be reused (for example if an admin account was compromised immediately reset the password and revoke active sessions).
+		
+		○ You can like disable the specific feature with the issue and the real customer will see that its unavailable temporary and then you can fix the issue and revolve the compromised passwords, API keys or anything else and reactivate the feature and check if the traffic patterns and all go to normal before the attack
+		
+		
+	Eradication
+	
+		○ Patching vulnerabilities: from an AppSec IR perspective, this will likely look like a recommendation to the development team to write a code fix / configuration change (a "hotfix") to close the security hole. This should be done quickly, but with great care, so it does not break other functionalities within the app.
+	
+	
+		○ Remove malicious artefacts: If the attacker gained authorised access to an application, they have left behind malicious artefacts. These should be found and removed. This can include malware, web shells, or any malicious code/injections from servers and databases
+	
+		○ Preserve forensic evidence: take backups or snapshots of relevant data (logs, malicious code samples, query history, etc.) as this evidence may be needed for deeper investigation or legal purposes later.
+		
+		○ Reset credentials/revoke accounts: Depending on whether the attacker took control of certain accounts during privilege escalation or even created accounts entirely, these accounts should be cleaned up. Reset passwords/API keys to accounts that are needed,
+
+
+	Restoration 
+	
+		○ Validation and testing: Before an incident can safely be declared over, you should validate that systems are fully functional and secure. Ensure the application, databases, and network devices are working as expected and confirm the vulnerability has indeed been fixed. Security testing and ensuring that vulnerabilities cannot be reproduced are critical at this stage.
+		 
+		○ System restoration: Once it has been confirmed that the application is safe, systems should be brought back online
+	
+		○ Monitoring for recurrence: As with after eradication, it is critical to keep an extra close eye on your application when it returns to production. You and your team have confirmed the vulnerability is not reproducible, but attackers should never be underestimated, so logs and alerts should be monitored rigorously.
+	
+	
+		
+		scp appsecir@10.10.84.114://home/appsecir/Documents/Logs/application-incident-logs.jsonl ~/Downloads/
